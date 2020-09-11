@@ -9,6 +9,9 @@ class InstaBot:
         self.username = username
         self.driver.get("https://instagram.com")
         sleep(2)
+        # self.driver.find_element_by_xpath("//a[contains(text(), 'Log in')]")\
+        #     .click()
+        # sleep(2)
         self.driver.find_element_by_xpath("//input[@name=\"username\"]")\
             .send_keys(username)
         self.driver.find_element_by_xpath("//input[@name=\"password\"]")\
@@ -19,6 +22,9 @@ class InstaBot:
         self.driver.find_element_by_xpath("//button[contains(text(), 'Not Now')]")\
             .click()
         sleep(2)
+        self.driver.find_element_by_xpath("//button[contains(text(), 'Not Now')]") \
+            .click()
+        sleep(3)
 
     def get_unfollowers(self):
         self.driver.find_element_by_xpath("//a[contains(@href,'/{}')]".format(self.username))\
@@ -31,7 +37,10 @@ class InstaBot:
             .click()
         followers = self._get_names()
         not_following_back = [user for user in following if user not in followers]
-        print(not_following_back)
+        counter = 0
+        for follow in not_following_back:
+            counter += 1
+            print(counter, follow)
 
     def _get_names(self):
         sleep(2)
@@ -47,10 +56,10 @@ class InstaBot:
         links = scroll_box.find_elements_by_tag_name('a')
         names = [name.text for name in links if name.text != '']
         # close button
-        self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[1]/div/div[2]/button")\
+        self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div[1]/div/div[2]/button") \
             .click()
         return names
 
 
-my_bot = InstaBot('_aaronjack', pw)
+my_bot = InstaBot('piotrwaszak', pw)
 my_bot.get_unfollowers()
